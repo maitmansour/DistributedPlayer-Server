@@ -1,11 +1,13 @@
 import java.io.*;
 import java.util.logging.*;
+import java.nio.file.*;
 
 public class RealPlayer implements Mp3Player.Player {
 
  Mp3Library myLibrary;
  Logger logger;
  String dataDir;
+ byte [] file;
 
  public RealPlayer() {
   dataDir = "data";
@@ -96,6 +98,28 @@ public class RealPlayer implements Mp3Player.Player {
   return resultBuffer;
  }
 
+public byte[] getFile(com.zeroc.Ice.Current current){
+  try{
+  Path path = Paths.get(dataDir + "/test.mp3");
+byte[] data = Files.readAllBytes(path);
+return data;
+  }catch (Exception e) {
+   e.printStackTrace();
+  }
+
+        return null;
+    }
+
+   public  void setFile(byte[] file, com.zeroc.Ice.Current current){
+     logger.info("file setted start");
+try (FileOutputStream fos = new FileOutputStream(dataDir + "/test.mp3")) {
+   fos.write(file);
+   //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
+}catch (Exception e) {
+   e.printStackTrace();
+}
+     logger.info("file setted finished ");
+   }
 
  private void saveObjectIntoDatabase() {
   try {

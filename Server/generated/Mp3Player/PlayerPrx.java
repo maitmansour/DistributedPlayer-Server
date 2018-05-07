@@ -127,6 +127,66 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
+    default byte[] getFile()
+    {
+        return getFile(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] getFile(java.util.Map<String, String> context)
+    {
+        return _iceI_getFileAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync()
+    {
+        return _iceI_getFileAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_getFileAsync(context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_getFileAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getFile", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    default void setFile(byte[] file)
+    {
+        setFile(file, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default void setFile(byte[] file, java.util.Map<String, String> context)
+    {
+        _iceI_setFileAsync(file, context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<Void> setFileAsync(byte[] file)
+    {
+        return _iceI_setFileAsync(file, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<Void> setFileAsync(byte[] file, java.util.Map<String, String> context)
+    {
+        return _iceI_setFileAsync(file, context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_setFileAsync(byte[] iceP_file, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setFile", null, sync, null);
+        f.invoke(false, context, null, ostr -> {
+                     ostr.writeByteSeq(iceP_file);
+                 }, null);
+        return f;
+    }
+
     /**
      * Contacts the remote server to verify that the object implements this type.
      * Raises a local exception if a communication error occurs.

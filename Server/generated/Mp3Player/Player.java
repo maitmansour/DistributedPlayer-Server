@@ -28,6 +28,10 @@ public interface Player extends com.zeroc.Ice.Object
 
     String deleteFile(String path, com.zeroc.Ice.Current current);
 
+    byte[] getFile(com.zeroc.Ice.Current current);
+
+    void setFile(byte[] file, com.zeroc.Ice.Current current);
+
     static final String[] _iceIds =
     {
         "::Ice::Object",
@@ -105,15 +109,39 @@ public interface Player extends com.zeroc.Ice.Object
         return inS.setResult(ostr);
     }
 
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getFile(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        byte[] ret = obj.getFile(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_setFile(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        byte[] iceP_file;
+        iceP_file = istr.readByteSeq();
+        inS.endReadParams();
+        obj.setFile(iceP_file, current);
+        return inS.setResult(inS.writeEmptyParams());
+    }
+
     final static String[] _iceOps =
     {
         "addNewFile",
         "deleteFile",
         "findByFeature",
+        "getFile",
         "ice_id",
         "ice_ids",
         "ice_isA",
-        "ice_ping"
+        "ice_ping",
+        "setFile"
     };
 
     @Override
@@ -142,19 +170,27 @@ public interface Player extends com.zeroc.Ice.Object
             }
             case 3:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_getFile(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 5:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 6:
             {
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+            }
+            case 7:
+            {
                 return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+            }
+            case 8:
+            {
+                return _iceD_setFile(this, in, current);
             }
         }
 
