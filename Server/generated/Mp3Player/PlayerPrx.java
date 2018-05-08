@@ -127,30 +127,33 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default byte[] getFile()
+    default byte[] getFile(String name, String part)
     {
-        return getFile(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return getFile(name, part, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default byte[] getFile(java.util.Map<String, String> context)
+    default byte[] getFile(String name, String part, java.util.Map<String, String> context)
     {
-        return _iceI_getFileAsync(context, true).waitForResponse();
+        return _iceI_getFileAsync(name, part, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync()
+    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync(String name, String part)
     {
-        return _iceI_getFileAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_getFileAsync(name, part, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync(java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<byte[]> getFileAsync(String name, String part, java.util.Map<String, String> context)
     {
-        return _iceI_getFileAsync(context, false);
+        return _iceI_getFileAsync(name, part, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_getFileAsync(java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_getFileAsync(String iceP_name, String iceP_part, java.util.Map<String, String> context, boolean sync)
     {
         com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getFile", null, sync, null);
-        f.invoke(true, context, null, null, istr -> {
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_name);
+                     ostr.writeString(iceP_part);
+                 }, istr -> {
                      byte[] ret;
                      ret = istr.readByteSeq();
                      return ret;

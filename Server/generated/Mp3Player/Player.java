@@ -28,7 +28,7 @@ public interface Player extends com.zeroc.Ice.Object
 
     String deleteFile(String path, com.zeroc.Ice.Current current);
 
-    byte[] getFile(com.zeroc.Ice.Current current);
+    byte[] getFile(String name, String part, com.zeroc.Ice.Current current);
 
     void setFile(String name, byte[] part, String current, String size, com.zeroc.Ice.Current current_);
 
@@ -112,8 +112,13 @@ public interface Player extends com.zeroc.Ice.Object
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getFile(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
-        inS.readEmptyParams();
-        byte[] ret = obj.getFile(current);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_name;
+        String iceP_part;
+        iceP_name = istr.readString();
+        iceP_part = istr.readString();
+        inS.endReadParams();
+        byte[] ret = obj.getFile(iceP_name, iceP_part, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeByteSeq(ret);
         inS.endWriteParams(ostr);
