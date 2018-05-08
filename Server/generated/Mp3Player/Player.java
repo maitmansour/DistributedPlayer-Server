@@ -30,7 +30,7 @@ public interface Player extends com.zeroc.Ice.Object
 
     byte[] getFile(com.zeroc.Ice.Current current);
 
-    void setFile(byte[] file, com.zeroc.Ice.Current current);
+    void setFile(String name, byte[] part, String current, String size, com.zeroc.Ice.Current current_);
 
     static final String[] _iceIds =
     {
@@ -124,10 +124,16 @@ public interface Player extends com.zeroc.Ice.Object
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
-        byte[] iceP_file;
-        iceP_file = istr.readByteSeq();
+        String iceP_name;
+        byte[] iceP_part;
+        String iceP_current;
+        String iceP_size;
+        iceP_name = istr.readString();
+        iceP_part = istr.readByteSeq();
+        iceP_current = istr.readString();
+        iceP_size = istr.readString();
         inS.endReadParams();
-        obj.setFile(iceP_file, current);
+        obj.setFile(iceP_name, iceP_part, iceP_current, iceP_size, current);
         return inS.setResult(inS.writeEmptyParams());
     }
 

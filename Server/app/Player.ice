@@ -7,7 +7,7 @@ module Mp3Player
         string findByFeature(string featureName, string featureValue );
         string deleteFile(string path);
         ByteSeq getFile();
-        void setFile (ByteSeq file);
+        void setFile (string name,ByteSeq part,string current,string size);
     }
 }
     

@@ -158,31 +158,34 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default void setFile(byte[] file)
+    default void setFile(String name, byte[] part, String current, String size)
     {
-        setFile(file, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        setFile(name, part, current, size, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void setFile(byte[] file, java.util.Map<String, String> context)
+    default void setFile(String name, byte[] part, String current, String size, java.util.Map<String, String> context)
     {
-        _iceI_setFileAsync(file, context, true).waitForResponse();
+        _iceI_setFileAsync(name, part, current, size, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setFileAsync(byte[] file)
+    default java.util.concurrent.CompletableFuture<Void> setFileAsync(String name, byte[] part, String current, String size)
     {
-        return _iceI_setFileAsync(file, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_setFileAsync(name, part, current, size, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setFileAsync(byte[] file, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<Void> setFileAsync(String name, byte[] part, String current, String size, java.util.Map<String, String> context)
     {
-        return _iceI_setFileAsync(file, context, false);
+        return _iceI_setFileAsync(name, part, current, size, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_setFileAsync(byte[] iceP_file, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_setFileAsync(String iceP_name, byte[] iceP_part, String iceP_current, String iceP_size, java.util.Map<String, String> context, boolean sync)
     {
         com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setFile", null, sync, null);
         f.invoke(false, context, null, ostr -> {
-                     ostr.writeByteSeq(iceP_file);
+                     ostr.writeString(iceP_name);
+                     ostr.writeByteSeq(iceP_part);
+                     ostr.writeString(iceP_current);
+                     ostr.writeString(iceP_size);
                  }, null);
         return f;
     }
