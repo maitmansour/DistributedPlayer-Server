@@ -102,7 +102,7 @@ public String deleteFile(String path, com.zeroc.Ice.Current current) {
 public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){
   try{
     logger.info("Start Sending part "+part+" on file "+name);
-    Path path = Paths.get(dataDir + "/music/"+name+""+name+".mp3");
+    Path path = Paths.get(dataDir + "/music/"+name+"/"+name+".mp3");
     byte[] data = Files.readAllBytes(path);
     logger.info("Spliting "+name+" into Binary array");
     byte[][] chunks=splitArray(data,100000);
