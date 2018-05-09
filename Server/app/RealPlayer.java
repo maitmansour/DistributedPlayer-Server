@@ -101,14 +101,12 @@ public String deleteFile(String path, com.zeroc.Ice.Current current) {
 
 public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){
   try{
-         logger.info("Start GET FILE");
-    Path path = Paths.get(dataDir + "/test.mp3");
+    logger.info("Start Sending part "+part+" on file "+name);
+    Path path = Paths.get(dataDir + "/music/"+name+""+name+".mp3");
     byte[] data = Files.readAllBytes(path);
-             logger.info("Start SPLIT ARRAY");
-
+    logger.info("Spliting "+name+" into Binary array");
     byte[][] chunks=splitArray(data,100000);
-             logger.info("END GET FILE");
-
+    logger.info("Endo of Sending part "+part+" on file "+name);
     return chunks[Integer.parseInt(part)];
   }catch (Exception e) {
    e.printStackTrace();
@@ -128,7 +126,7 @@ public  void setFile(String name, byte[] part, String current, String size, com.
    fos.write(part);  
    if (current.equals(size)) {
      logger.info("All parts of file"+name+" are downloaded - Combining Started");
-    
+     
      FileOutputStream fos2 = new FileOutputStream(music_directory + "/"+name+".mp3");
      for (int i=0; i<=Integer.parseInt(size);i++ ) {
        logger.info("Start Combining the "+size+" parts on file "+name);
@@ -140,13 +138,13 @@ public  void setFile(String name, byte[] part, String current, String size, com.
        Files.delete(path);
        logger.info("End of deleting part "+i+" on file "+name+" at "+path);
      }
-       logger.info("End of Combining the "+size+" parts on file "+name);
+     logger.info("End of Combining the "+size+" parts on file "+name);
    }
 
  }catch (Exception e) {
    e.printStackTrace();
  }
-  logger.info("End of Receiving part "+current+" on file "+name);
+ logger.info("End of Receiving part "+current+" on file "+name);
 }
 
 
@@ -162,9 +160,9 @@ private void saveObjectIntoDatabase() {
 }
 
 private  byte[][] splitArray(byte[] arrayToSplit, int chunkSize){
-    if(chunkSize<=0){
+  if(chunkSize<=0){
         return null;  // just in case :)
-    }
+      }
     // first we have to check if the array can be split in multiple 
     // arrays of equal 'chunk' size
     int rest = arrayToSplit.length % chunkSize;  // if rest>0 then our last array will have less elements than the others 
@@ -178,12 +176,12 @@ private  byte[][] splitArray(byte[] arrayToSplit, int chunkSize){
     // needs to be handled separately, so we iterate 1 times less.
     for(int i = 0; i < (rest > 0 ? chunks - 1 : chunks); i++){
         // this copies 'chunk' times 'chunkSize' elements into a new array
-        arrays[i] = Arrays.copyOfRange(arrayToSplit, i * chunkSize, i * chunkSize + chunkSize);
+      arrays[i] = Arrays.copyOfRange(arrayToSplit, i * chunkSize, i * chunkSize + chunkSize);
     }
     if(rest > 0){ // only when we have a rest
         // we copy the remaining elements into the last chunk
-        arrays[chunks - 1] = Arrays.copyOfRange(arrayToSplit, (chunks - 1) * chunkSize, (chunks - 1) * chunkSize + rest);
+      arrays[chunks - 1] = Arrays.copyOfRange(arrayToSplit, (chunks - 1) * chunkSize, (chunks - 1) * chunkSize + rest);
     }
     return arrays; // that's it
-}
+  }
 }
