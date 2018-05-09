@@ -118,38 +118,37 @@ public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){
 }
 
 public  void setFile(String name, byte[] part, String current, String size, com.zeroc.Ice.Current current_){
-  File music_directory_file=new File(dataDir +"/"+ name);
+  File music_directory_file=new File(dataDir +"/music/"+ name);
   music_directory_file.mkdirs();
   String music_directory=music_directory_file.getAbsolutePath();
 
 
-
-  logger.info("file set start");
+  logger.info("Start Receiving part "+current+" on file "+name);
   try (FileOutputStream fos = new FileOutputStream(music_directory + "/"+current+".mp3")) {
-   fos.write(part);
-   //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
-  
-  //Combining
+   fos.write(part);  
    if (current.equals(size)) {
-     logger.info("ALL PARTS DOWNLOADED");
-     logger.info("START COMBINING");
-     FileOutputStream fos2 = new FileOutputStream(music_directory + "/FULL.mp3");
-
+     logger.info("All parts of file"+name+" are downloaded - Combining Started");
+    
+     FileOutputStream fos2 = new FileOutputStream(music_directory + "/"+name+".mp3");
      for (int i=0; i<=Integer.parseInt(size);i++ ) {
+       logger.info("Start Combining the "+size+" parts on file "+name);
        Path path = Paths.get(music_directory + "/"+i+".mp3");
        byte[] data = Files.readAllBytes(path);
        fos2.write(data);
+       logger.info("End of Combining part "+i+" on file "+name);
+       logger.info("Start deleting part "+i+" on file "+name+" at "+path);
+       Files.delete(path);
+       logger.info("End of deleting part "+i+" on file "+name+" at "+path);
      }
-
-     logger.info("COMBINING FINISHED");
-
+       logger.info("End of Combining the "+size+" parts on file "+name);
    }
 
  }catch (Exception e) {
    e.printStackTrace();
  }
- logger.info("file setted finished ");
+  logger.info("End of Receiving part "+current+" on file "+name);
 }
+
 
 private void saveObjectIntoDatabase() {
   try {
