@@ -106,7 +106,7 @@ public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){
     byte[] data = Files.readAllBytes(path);
     logger.info("Spliting "+name+" into Binary array");
     byte[][] chunks=splitArray(data,100000);
-    logger.info("Endo of Sending part "+part+" on file "+name);
+    logger.info("End of Sending part "+part+" on file "+name);
     return chunks[Integer.parseInt(part)];
   }catch (Exception e) {
    e.printStackTrace();
@@ -126,7 +126,7 @@ public  void setFile(String name, byte[] part, String current, String size, com.
    fos.write(part);  
    if (current.equals(size)) {
      logger.info("All parts of file"+name+" are downloaded - Combining Started");
-     
+
      FileOutputStream fos2 = new FileOutputStream(music_directory + "/"+name+".mp3");
      for (int i=0; i<=Integer.parseInt(size);i++ ) {
        logger.info("Start Combining the "+size+" parts on file "+name);
