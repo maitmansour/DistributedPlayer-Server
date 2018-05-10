@@ -22,36 +22,35 @@ package Mp3Player;
 
 public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
 {
-    default String addNewFile(String title, String path, String artist, String album, String year, String rating)
+    default String addNewFile(String title, String artist, String album, String year, String filename)
     {
-        return addNewFile(title, path, artist, album, year, rating, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return addNewFile(title, artist, album, year, filename, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default String addNewFile(String title, String path, String artist, String album, String year, String rating, java.util.Map<String, String> context)
+    default String addNewFile(String title, String artist, String album, String year, String filename, java.util.Map<String, String> context)
     {
-        return _iceI_addNewFileAsync(title, path, artist, album, year, rating, context, true).waitForResponse();
+        return _iceI_addNewFileAsync(title, artist, album, year, filename, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.String> addNewFileAsync(String title, String path, String artist, String album, String year, String rating)
+    default java.util.concurrent.CompletableFuture<java.lang.String> addNewFileAsync(String title, String artist, String album, String year, String filename)
     {
-        return _iceI_addNewFileAsync(title, path, artist, album, year, rating, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_addNewFileAsync(title, artist, album, year, filename, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.String> addNewFileAsync(String title, String path, String artist, String album, String year, String rating, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.String> addNewFileAsync(String title, String artist, String album, String year, String filename, java.util.Map<String, String> context)
     {
-        return _iceI_addNewFileAsync(title, path, artist, album, year, rating, context, false);
+        return _iceI_addNewFileAsync(title, artist, album, year, filename, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_addNewFileAsync(String iceP_title, String iceP_path, String iceP_artist, String iceP_album, String iceP_year, String iceP_rating, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_addNewFileAsync(String iceP_title, String iceP_artist, String iceP_album, String iceP_year, String iceP_filename, java.util.Map<String, String> context, boolean sync)
     {
         com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "addNewFile", null, sync, null);
         f.invoke(true, context, null, ostr -> {
                      ostr.writeString(iceP_title);
-                     ostr.writeString(iceP_path);
                      ostr.writeString(iceP_artist);
                      ostr.writeString(iceP_album);
                      ostr.writeString(iceP_year);
-                     ostr.writeString(iceP_rating);
+                     ostr.writeString(iceP_filename);
                  }, istr -> {
                      String ret;
                      ret = istr.readString();

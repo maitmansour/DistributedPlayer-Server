@@ -22,7 +22,7 @@ package Mp3Player;
 
 public interface Player extends com.zeroc.Ice.Object
 {
-    String addNewFile(String title, String path, String artist, String album, String year, String rating, com.zeroc.Ice.Current current);
+    String addNewFile(String title, String artist, String album, String year, String filename, com.zeroc.Ice.Current current);
 
     String findByFeature(String featureName, String featureValue, com.zeroc.Ice.Current current);
 
@@ -60,19 +60,17 @@ public interface Player extends com.zeroc.Ice.Object
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
         String iceP_title;
-        String iceP_path;
         String iceP_artist;
         String iceP_album;
         String iceP_year;
-        String iceP_rating;
+        String iceP_filename;
         iceP_title = istr.readString();
-        iceP_path = istr.readString();
         iceP_artist = istr.readString();
         iceP_album = istr.readString();
         iceP_year = istr.readString();
-        iceP_rating = istr.readString();
+        iceP_filename = istr.readString();
         inS.endReadParams();
-        String ret = obj.addNewFile(iceP_title, iceP_path, iceP_artist, iceP_album, iceP_year, iceP_rating, current);
+        String ret = obj.addNewFile(iceP_title, iceP_artist, iceP_album, iceP_year, iceP_filename, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeString(ret);
         inS.endWriteParams(ostr);
