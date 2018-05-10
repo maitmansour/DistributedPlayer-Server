@@ -94,6 +94,37 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
+    default String getAllMusic()
+    {
+        return getAllMusic(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default String getAllMusic(java.util.Map<String, String> context)
+    {
+        return _iceI_getAllMusicAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> getAllMusicAsync()
+    {
+        return _iceI_getAllMusicAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> getAllMusicAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_getAllMusicAsync(context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_getAllMusicAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getAllMusic", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     String ret;
+                     ret = istr.readString();
+                     return ret;
+                 });
+        return f;
+    }
+
     default String deleteFile(String path)
     {
         return deleteFile(path, com.zeroc.Ice.ObjectPrx.noExplicitContext);

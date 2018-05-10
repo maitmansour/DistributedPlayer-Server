@@ -70,6 +70,10 @@ public String addNewFile(String title, String artist, String album, String year,
 
 }
 
+public String getAllMusic(com.zeroc.Ice.Current current){
+    return myLibrary.toString();
+}
+
 public String findByFeature(String featureName, String featureValue, com.zeroc.Ice.Current current) {
   Mp3Library foundedLibrary = myLibrary.findByFeature(featureName, featureValue);
   String resultBuffer = "";
@@ -84,9 +88,22 @@ public String findByFeature(String featureName, String featureValue, com.zeroc.I
 
 }
 
-public String deleteFile(String path, com.zeroc.Ice.Current current) {
-  String resultBuffer = "deleteFile (" + path + ")";
-  if (myLibrary.deleteFile(path)) {
+public String deleteFile(String filename, com.zeroc.Ice.Current current) {
+  String resultBuffer = "deleteFile (" + filename + ")";
+  Boolean deleted = false;
+  if (myLibrary.deleteFile(filename)) {
+    try{
+        String music_directory = dataDir +"/music/"+ filename;
+      Path path1 = Paths.get(music_directory+"/"+filename+".mp3");
+      Path path2 = Paths.get(music_directory);
+       Files.delete(path1);
+       Files.delete(path2);
+       deleted=true;  
+     }catch (Exception e) {
+       System.out.println(e);
+     }
+
+
    resultBuffer += " was deleted successfuly";
  } else {
    resultBuffer += " was not found";
@@ -96,7 +113,7 @@ public String deleteFile(String path, com.zeroc.Ice.Current current) {
 
  logger.info(resultBuffer);
  this.saveObjectIntoDatabase();
- return resultBuffer;
+ return deleted?"1":"0";
 }
 
 public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){

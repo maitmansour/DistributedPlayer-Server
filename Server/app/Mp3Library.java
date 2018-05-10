@@ -40,6 +40,13 @@ public class Mp3Library implements Serializable {
       foundedFiles.addNewFile(mp3File);
      }
     }
+    break;   
+    case "filename":
+    for (Mp3File mp3File: library) {
+     if (mp3File.getFilename().equals(featureValue)) {
+      foundedFiles.addNewFile(mp3File);
+     }
+    }
     break;
 
   }
@@ -78,10 +85,12 @@ public class Mp3Library implements Serializable {
 
  @Override
  public String toString() {
-  String libraryFiles = "";
+  String libraryFiles = "[";
   for (Mp3File mp3File: library) {
-   libraryFiles += mp3File.toString() + "\n";
+   libraryFiles += mp3File.toString() + "";
   }
+   libraryFiles = libraryFiles.substring(0, libraryFiles.length() - 1);
+   libraryFiles += "]";
   return libraryFiles;
  }
 

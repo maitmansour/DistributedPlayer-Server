@@ -36,7 +36,7 @@ public class Mp3File implements Serializable {
  }
  @Override
  public String toString() {
-  return "MP3 FILE [\ntitle=" + title + ", \nartist=" + artist + ", \nalbum=" + album + ", \nyear=" + year + ", \nfilename=" + filename + "]";
+  return "{\"title\":\"" + title + "\",\"artist\":\"" + artist + "\", \"album\":\"" + album + "\", \"year\":\"" + year + "\", \"filename\":\"" + filename + "\", \"image\":\"" + image + "\"},";
  }
  public String getTitle() {
   return title;

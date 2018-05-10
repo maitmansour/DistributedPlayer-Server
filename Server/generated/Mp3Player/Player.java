@@ -26,6 +26,8 @@ public interface Player extends com.zeroc.Ice.Object
 
     String findByFeature(String featureName, String featureValue, com.zeroc.Ice.Current current);
 
+    String getAllMusic(com.zeroc.Ice.Current current);
+
     String deleteFile(String path, com.zeroc.Ice.Current current);
 
     byte[] getFile(String name, String part, com.zeroc.Ice.Current current);
@@ -95,6 +97,17 @@ public interface Player extends com.zeroc.Ice.Object
         return inS.setResult(ostr);
     }
 
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getAllMusic(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        String ret = obj.getAllMusic(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeString(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_deleteFile(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
@@ -147,6 +160,7 @@ public interface Player extends com.zeroc.Ice.Object
         "addNewFile",
         "deleteFile",
         "findByFeature",
+        "getAllMusic",
         "getFile",
         "ice_id",
         "ice_ids",
@@ -181,25 +195,29 @@ public interface Player extends com.zeroc.Ice.Object
             }
             case 3:
             {
-                return _iceD_getFile(this, in, current);
+                return _iceD_getAllMusic(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_getFile(this, in, current);
             }
             case 5:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 6:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 7:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
             }
             case 8:
+            {
+                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+            }
+            case 9:
             {
                 return _iceD_setFile(this, in, current);
             }
