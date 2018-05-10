@@ -7,6 +7,7 @@ public class Mp3File implements Serializable {
  private String album;
  private int year;
  private String filename;
+ private String image;
 
 
 
@@ -48,6 +49,12 @@ public class Mp3File implements Serializable {
  }
  public void setFilename(String filename) {
   this.filename = filename;
+ }
+ public String getImage() {
+  return image;
+ }
+ public void setImage(String image) {
+  this.image = image;
  }
  public String getArtist() {
   return artist;

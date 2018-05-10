@@ -22,7 +22,7 @@ package Mp3Player;
 
 public interface Player extends com.zeroc.Ice.Object
 {
-    String addNewFile(String title, String artist, String album, String year, String filename, com.zeroc.Ice.Current current);
+    String addNewFile(String title, String artist, String album, String year, String filename, String image, com.zeroc.Ice.Current current);
 
     String findByFeature(String featureName, String featureValue, com.zeroc.Ice.Current current);
 
@@ -64,13 +64,15 @@ public interface Player extends com.zeroc.Ice.Object
         String iceP_album;
         String iceP_year;
         String iceP_filename;
+        String iceP_image;
         iceP_title = istr.readString();
         iceP_artist = istr.readString();
         iceP_album = istr.readString();
         iceP_year = istr.readString();
         iceP_filename = istr.readString();
+        iceP_image = istr.readString();
         inS.endReadParams();
-        String ret = obj.addNewFile(iceP_title, iceP_artist, iceP_album, iceP_year, iceP_filename, current);
+        String ret = obj.addNewFile(iceP_title, iceP_artist, iceP_album, iceP_year, iceP_filename, iceP_image, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeString(ret);
         inS.endWriteParams(ostr);

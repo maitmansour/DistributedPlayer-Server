@@ -49,23 +49,24 @@ public class RealPlayer implements Mp3Player.Player {
 }
 
 
-public String addNewFile(String title, String artist, String album, String year, String filename, com.zeroc.Ice.Current current) {
+public String addNewFile(String title, String artist, String album, String year, String filename,String image, com.zeroc.Ice.Current current) {
   Mp3File tmpFile = new Mp3File(title,filename);
   tmpFile.setAlbum(album);
   tmpFile.setArtist(artist);
   tmpFile.setFilename(filename);
   tmpFile.setYear(Integer.parseInt(year));
+  tmpFile.setImage(image);
   Boolean added = myLibrary.addNewFile(tmpFile);
   this.saveObjectIntoDatabase();
   String bufferLog = "";
   if (added) {
-   bufferLog = "file  (" + title + "," + filename + "," + artist + "," + album + "," + year + ",) was added successfuly";
+   bufferLog = "file  (" + title + "," + filename + "," + artist + "," + album + "," + year + ","+image+") was added successfuly";
  } else {
-   bufferLog = "file  (" + title + "," + filename + "," + artist + "," + album + "," + year + ",) was already added";
+   bufferLog = "file  (" + title + "," + filename + "," + artist + "," + album + "," + year + ","+image+") was already added";
 
  }
  logger.info(bufferLog);
- return bufferLog;
+ return added?"1":"0";
 
 }
 
