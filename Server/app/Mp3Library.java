@@ -41,13 +41,6 @@ public class Mp3Library implements Serializable {
      }
     }
     break;
-   case "rating":
-    for (Mp3File mp3File: library) {
-     if (mp3File.getYear() == Integer.valueOf(featureValue)) {
-      foundedFiles.addNewFile(mp3File);
-     }
-    }
-    break;
 
   }
   if (foundedFiles.isEmpty()) {
@@ -74,7 +67,7 @@ public class Mp3Library implements Serializable {
 
  public boolean deleteFile(String path) {
   for (Mp3File mp3File: library) {
-   if (mp3File.getPath().equals(path)) {
+   if (mp3File.getFilename().equals(path)) {
     this.library.remove(mp3File);
     return true;
    }
