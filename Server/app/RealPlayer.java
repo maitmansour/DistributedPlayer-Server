@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.logging.*;
 import java.nio.file.*;
 import java.util.Arrays;
+import java.net.*;
+import java.util.*;
 
 public class RealPlayer implements Mp3Player.Player {
 
@@ -9,9 +11,13 @@ public class RealPlayer implements Mp3Player.Player {
  Logger logger;
  String dataDir;
  byte [] file;
+ String myNetworkInterface;
+ String teleStreaming;
+ String radioStreaming;
 
  public RealPlayer() {
   dataDir = "data";
+  myNetworkInterface="wlp1s0";
   myLibrary = new Mp3Library();
 
   /**
@@ -46,8 +52,39 @@ public class RealPlayer implements Mp3Player.Player {
  }
  logger.info("Database Charged successfuly");
  logger.info("RealPlayer Started successfuly");
+
+ getLocalIP();
+ startLiveStreaming();
 }
 
+public void getLocalIP(){
+   logger.info("Loking for local IP");
+ try{
+  Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+  for (; n.hasMoreElements();)
+  {
+    NetworkInterface e = n.nextElement();
+    if (e.getName().equals(myNetworkInterface)) {
+      Enumeration<InetAddress> a = e.getInetAddresses();
+      for (; a.hasMoreElements();)
+      {
+        InetAddress addr = a.nextElement();
+
+        if ((!addr.getHostAddress().equals("127.0.0.1"))&&(!addr.getHostAddress().contains(":"))) {
+          myNetworkInterface=addr.getHostAddress();
+             logger.info("Loking for local IP finshed, result : "+myNetworkInterface);                 
+        }
+
+      }
+
+    }
+  }
+} catch (Exception e) {
+ logger.info("Network Error");
+}
+   logger.info("local IP founded successfuly");
+
+}
 
 public String addNewFile(String title, String artist, String album, String year, String filename,String image, com.zeroc.Ice.Current current) {
   Mp3File tmpFile = new Mp3File(title,filename);
@@ -71,7 +108,7 @@ public String addNewFile(String title, String artist, String album, String year,
 }
 
 public String getAllMusic(com.zeroc.Ice.Current current){
-    return myLibrary.toString();
+  return myLibrary.toString();
 }
 
 public String findByFeature(String featureName, String featureValue, com.zeroc.Ice.Current current) {
@@ -93,15 +130,15 @@ public String deleteFile(String filename, com.zeroc.Ice.Current current) {
   Boolean deleted = false;
   if (myLibrary.deleteFile(filename)) {
     try{
-        String music_directory = dataDir +"/music/"+ filename;
+      String music_directory = dataDir +"/music/"+ filename;
       Path path1 = Paths.get(music_directory+"/"+filename+".mp3");
       Path path2 = Paths.get(music_directory);
-       Files.delete(path1);
-       Files.delete(path2);
-       deleted=true;  
-     }catch (Exception e) {
-       System.out.println(e);
-     }
+      Files.delete(path1);
+      Files.delete(path2);
+      deleted=true;  
+    }catch (Exception e) {
+     System.out.println(e);
+   }
 
 
    resultBuffer += " was deleted successfuly";
@@ -130,6 +167,34 @@ public byte[] getFile(String name, String part,com.zeroc.Ice.Current current){
  }
 
  return null;
+}
+
+public void startLiveStreaming(){
+  startTele();
+  startRadio();
+}
+
+public void startTele(){
+  try {
+    StreamRTP rtp = new StreamRTP();
+    rtp.start(myNetworkInterface, 5550, dataDir+"/tele/live.mp4","tele"); 
+    teleStreaming="rtsp://@"+myNetworkInterface+":5550/tele"; 
+    logger.info("Start tele Streaming ON : "+teleStreaming);
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
+}
+
+public void startRadio(){
+  try {
+    StreamRTP rtp = new StreamRTP();
+    rtp.start(myNetworkInterface, 5551, dataDir+"/radio/live.mp3","radio"); 
+    radioStreaming="rtsp://@"+myNetworkInterface+":5550/radio"; 
+    logger.info("Start Radio Streaming ON : "+radioStreaming);
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
+
 }
 
 public  void setFile(String name, byte[] part, String current, String size, com.zeroc.Ice.Current current_){
