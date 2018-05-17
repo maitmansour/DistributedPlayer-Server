@@ -4,6 +4,9 @@ import java.nio.file.*;
 import java.util.Arrays;
 import java.net.*;
 import java.util.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 
 public class RealPlayer implements Mp3Player.Player {
 
@@ -52,9 +55,24 @@ public class RealPlayer implements Mp3Player.Player {
  }
  logger.info("Database Charged successfuly");
  logger.info("RealPlayer Started successfuly");
-
  getLocalIP();
+
+try{
+  registerServer();
+}catch (Exception e) {
+     logger.info("Exeption during POST "+e.getMessage() );
+}
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+      public void run() {
+        try{
+        RealPlayer.this.unRegisterServer();
+      }catch (Exception e) {
+        logger.info("Hook unRegisterServer Error");
+      }
+      }
+    });
  startLiveStreaming();
+
 }
 
 public void getLocalIP(){
@@ -266,4 +284,49 @@ private  byte[][] splitArray(byte[] arrayToSplit, int chunkSize){
     }
     return arrays; // that's it
   }
+
+
+
+private void registerServer() throws Exception{
+String url = "http://localhost/metaserver/web/index.php/connections/register";
+    URL obj = new URL(url);
+    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    //add reuqest header
+    con.setRequestMethod("POST");
+    String urlParameters = "ip="+myNetworkInterface+"&radio=rtsp://@"+myNetworkInterface+":5550/radio&tele=rtsp://@"+myNetworkInterface+":5551/tele";
+    
+    // Send post request
+    con.setDoOutput(true);
+    DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+    wr.writeBytes(urlParameters);
+    wr.flush();
+    wr.close();
+
+    int responseCode = con.getResponseCode();
+    logger.info("registering server on metaserver");
+    logger.info("registering parameters : " +urlParameters);
+    logger.info("registering response : " +responseCode);    
+}
+private void unRegisterServer() throws Exception{
+String url = "http://localhost/metaserver/web/index.php/connections/unregister";
+    URL obj = new URL(url);
+    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    //add reuqest header
+    con.setRequestMethod("POST");
+    String urlParameters = "ip="+myNetworkInterface;
+    
+    // Send post request
+    con.setDoOutput(true);
+    DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+    wr.writeBytes(urlParameters);
+    wr.flush();
+    wr.close();
+
+    int responseCode = con.getResponseCode();
+    logger.info("UNregistering server on metaserver");
+    logger.info("UNregistering parameters : " +urlParameters);
+    logger.info("UNregistering response : " +responseCode);    
+}
 }
