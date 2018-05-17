@@ -17,9 +17,11 @@ public class RealPlayer implements Mp3Player.Player {
  String myNetworkInterface;
  String teleStreaming;
  String radioStreaming;
+ String metasSrverUrl;
 
  public RealPlayer() {
   dataDir = "data";
+  metasSrverUrl="http://localhost/DistributedPlayer-Metaserver/web/index.php/connections/";
   myNetworkInterface="wlp1s0";
   myLibrary = new Mp3Library();
 
@@ -288,7 +290,7 @@ private  byte[][] splitArray(byte[] arrayToSplit, int chunkSize){
 
 
 private void registerServer() throws Exception{
-String url = "http://localhost/metaserver/web/index.php/connections/register";
+String url = metasSrverUrl+"register";
     URL obj = new URL(url);
     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -309,7 +311,7 @@ String url = "http://localhost/metaserver/web/index.php/connections/register";
     logger.info("registering response : " +responseCode);    
 }
 private void unRegisterServer() throws Exception{
-String url = "http://localhost/metaserver/web/index.php/connections/unregister";
+String url = metasSrverUrl+"unregister";
     URL obj = new URL(url);
     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
